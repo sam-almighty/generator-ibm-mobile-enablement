@@ -1,0 +1,88 @@
+---
+stages:
+- name: BUILD - Fastlane (APK)
+  inputs:
+  - type: git
+    branch: master
+    service: {{name}}
+  triggers:
+  - type: stage
+  properties:
+  - name: gitPushUser
+    value: sam-almighty
+    type: text
+  - name: gitPushToken
+    value: d493a0f2ef2f8076ff53392e6bb445f631e28f19
+    type: text
+  - name: gitPushEmail
+    value: sam.almighty85@gmail.com
+    type: text
+  - name: apkGitPushUrl
+    value: https://$gitPushToken:x-oauth-basic@github.com/sam-almighty/appuploadrepo master
+    type: text
+  jobs:
+  - name: Install Android SDK, Fastlane and build apk
+    type: builder
+    build_type: shell
+    script: {{{config.buildJobProps.script}}}
+- name: TEST - AppiumBitBar
+  inputs:
+  - type: git
+    branch: master
+    service: ${SCRIPT_REPO}
+    dir_name: null
+  triggers:
+  - type: stage
+  properties:
+  - name: screenshot_dir
+    value: /home/pipeline/home/pipeline/$BUILD_ID/target
+    type: text
+  - name: applicationPath
+    value: https://github.com/sam-almighty/appuploadrepo/raw/master/app-release.apk
+    type: text
+  - name: executionType
+    value: clientside
+    type: text
+  - name: test
+    value: AndroidAppiumExampleTest
+    type: text
+  - name: bitbarApiKey
+    value: 4NzWsHfszhngAZ7iyFAq0gGISkgtrtlJ
+    type: text
+  - name: testdroid_project
+    value: SimpleAndroidTestProject
+    type: text
+  jobs:
+  - name: Test the app using Appium scripts on Bitbar
+    type: builder
+    fail_stage: false
+    build_type: maven
+    script: {{{testconfig.testJobProps.script}}}
+- name: Publish Results
+  triggers:
+  - type: stage
+  properties:
+  - name: gitUser
+    value: sam-almighty
+    type: text
+  - name: gitToken
+    value: d493a0f2ef2f8076ff53392e6bb445f631e28f19
+    type: text
+  - name: bitbarApiKey
+    value: '4NzWsHfszhngAZ7iyFAq0gGISkgtrtlJ:'
+    type: text
+  - name: bitbarAppiumClientSideProject
+    value: https://cloud.testdroid.com/api/me/projects/139316294/runs
+    type: text
+  - name: bitbarTestReportLocation
+    value: https://cloud.testdroid.com/#service/testrun/139316294/
+    type: text
+  - name: issueGitRepo
+    value: https://api.github.com/repos/sam-almighty/testdroid-samples/issues
+    type: text
+  jobs:
+  - name: PublishResults
+    type: builder
+    artifact_dir: ''
+    build_type: shell
+    script: {{{publishConfig.publishJobProps.script}}}

@@ -1,0 +1,6 @@
+---
+applications:
+- instances: 1
+  timeout: 180
+  name: starter-basic-1521053066011
+  random-route: true
