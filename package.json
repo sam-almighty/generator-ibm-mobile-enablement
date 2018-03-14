@@ -1,5 +1,5 @@
 {
-  "name": "generator-ibm-enablement",
+  "name": "generator-ibm-mobile-enablement",
   "version": "0.0.1",
   "description": "This generator adds IBM Cloud enablement to applications",
   "main": "generators/app/index.js",
