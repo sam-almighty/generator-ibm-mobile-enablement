@@ -58,6 +58,8 @@ services:
           PROD_ORG_NAME: '{{prodorgname}}'
           PROD_REGION_ID: '{{prodregion}}'
         execute: false
+  webide:
+    service_id: orion      
 form:
   pipeline:
     parameters:
